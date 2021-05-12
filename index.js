@@ -11,7 +11,7 @@ function getSecrets() {
     "--region",
     "sa-east-1",
     "--cmk",
-    process.env.AWS_CMK_ARN_ID,
+    process.env.AWS_CMK_ARN,
     "--json",
     JSON.stringify({ ARMS: process.env.ARMS }),
   ];
