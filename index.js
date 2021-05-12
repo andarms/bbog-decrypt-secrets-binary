@@ -16,7 +16,7 @@ function getSecrets() {
     JSON.stringify({ ARMS: process.env.ARMS }),
   ];
   let promise = new Promise((resolve, reject) => {
-    execFile("./aws-decrypt", params, null, (err, data) => {
+    execFile("bbog-dig-secret-decrypt", params, null, (err, data) => {
       if (err) reject(err);
       else resolve(data);
     });
