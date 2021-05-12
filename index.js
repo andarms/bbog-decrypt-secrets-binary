@@ -1,4 +1,6 @@
 const execFile = require("child_process").execFile;
+const path = require("path");
+
 exports.handler = async function (event, context) {
   const data = await getSecrets();
   return data;
