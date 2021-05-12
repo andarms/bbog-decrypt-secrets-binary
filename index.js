@@ -16,15 +16,10 @@ function getSecrets() {
     JSON.stringify({ ARMS: process.env.ARMS }),
   ];
   let promise = new Promise((resolve, reject) => {
-    execFile(
-      path.join(process.env.LAMBDA_TASK_ROOT, "aws-decrypt"),
-      params,
-      null,
-      (err, data) => {
-        if (err) reject(err);
-        else resolve(data);
-      }
-    );
+    execFile("./aws-decrypt", params, null, (err, data) => {
+      if (err) reject(err);
+      else resolve(data);
+    });
   });
   return promise;
 }
