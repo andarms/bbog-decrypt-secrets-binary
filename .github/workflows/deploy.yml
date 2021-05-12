@@ -1,0 +1,47 @@
+name: aws lamda cd
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains a single job called "build"
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: "Download files"
+        uses: actions/checkout@v2
+
+      - name: Checkout andarms/-bdb-dig-do-pipelines-action-lambdas-IaC
+        uses: actions/checkout@v2
+        with:
+          repository: andarms/-bdb-dig-do-pipelines-action-lambdas-IaC
+          ref: ""
+          token: ${{ secrets.ARMS_GITHUB_ACCESS_TOKEN }}
+          persist-credentials: false
+          path: ./.github/actions/bdb-dig-do-pipelines-action-lambdas-IaC
+      - name: install dependecies
+        run: npm ci
+      - name: Deploy Lambda Function
+        uses: ./.github/actions/bdb-dig-do-pipelines-action-lambdas-IaC/
+        with:
+          function-name: bbog-decrypt-secrets-binary
+          aws-account-id: ${{ secrets.AWS_ACCOUNT }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-cmk: ${{secrets.AWS_CMK_ARN_ID}}
+          aws-region: sa-east-1
+          version: $GITHUB_SHA
+          files-to-compress: "node_modules static build index.js package.json"
+          function-handler: index.handler
+          function-memory-size: 128
+          function-runtime: nodejs14.x
+          path-to-env-vars: pipeline/env.json
+          encrypt-env-vars: true
