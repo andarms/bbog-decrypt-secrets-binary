@@ -17,7 +17,7 @@ function getSecrets() {
   ];
   let promise = new Promise((resolve, reject) => {
     execFile(
-      path.Join(os.GetEnv("LAMBDA_TASK_ROOT"), "aws-decrypt"),
+      path.join(process.env.LAMBDA_TASK_ROOT, "aws-decrypt"),
       params,
       null,
       (err, data) => {
