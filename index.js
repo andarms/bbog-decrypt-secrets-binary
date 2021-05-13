@@ -7,7 +7,7 @@ exports.handler = async function (event, context) {
 };
 
 function getSecrets() {
-  const command = `bbog-dig-secret-decrypt --region sa-east-1 --cmk ${process.env.AWS_CMK_ARN} ${process.env.ARMS}`;
+  const command = `bbog-dig-secret-decrypt --region sa-east-1 --cmk ${process.env.AWS_CMK_ARN} --json '{ "ARMS": "${process.env.ARMS}" }'`;
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       if (err) {
